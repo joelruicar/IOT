@@ -14,10 +14,10 @@ Progreso del trabajo:
 ![](https://geps.dev/progress/30)
 - Seminario 3 
 ![](https://geps.dev/progress/0)
-- Seminario 3 
+- Seminario 4
 ![](https://geps.dev/progress/0)
 ---
-- Projecto
+- Projecto final
 ![](https://geps.dev/progress/0)
 
 ## Getting Started
