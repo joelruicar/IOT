@@ -1,0 +1,9 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "seminari-2-vscode-alumno/lib/java-json.jar",
+        "seminari-2-vscode-alumno/lib/org.eclipse.paho.client.mqttv3-1.2.5.jar",
+        "seminari-2-vscode-alumno/lib/org.eclipse.paho.client.mqttv3-1.2.5-sources.jar",
+        "seminari-2-vscode-alumno/lib/org.restlet-3.0-M1.jar"
+    ]
+}
