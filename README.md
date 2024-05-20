@@ -15,16 +15,16 @@ Projecto de elavoración de las practicas de IoT para la asignatura de MUCNAP
 
 ### Installing
 
-* Descargar código
-* 
+* Descargar código y prepararlo en VSCode. Emplear la vista 'JAVA PROJECTS' para definir su estructura.
 
 ### Executing program
 
-* How to run the program
-* Step-by-step bullets
+* Ejecutar DispositivoIniciador.java con "ttmi061 ttmi061.iot.upv.es 8182 tcp://ttmi008.iot.upv.es:1883" como argumentos
 
+
+Ejemplo comando a ejecutar:
 ```
-code blocks for commands
+& 'C:\rutaajava/java.exe' '@opcionalarfile.argfile' 'dispositivo.iniciador.DispositivoIniciador' ttmi061 ttmi061.iot.upv.es 8182 tcp://ttmi008.iot.upv.es:1883
 ```
 
 ## Help
@@ -39,15 +39,12 @@ command to run if program contains helper info
 
 Contributors names and contact info
 
-[@jroalgra](https://github.com/joralgra)
+[@joralgra](https://github.com/joralgra)
 
 ## Version History
 
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
 * 0.1
-    * Initial Release
+    * Version incial
 
 ## License
 
