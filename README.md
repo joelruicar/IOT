@@ -9,9 +9,11 @@ Implementaciónes de los seminarios y projecto técnologicos IoT
 Progreso del trabajo:
 
 - Seminario 1
-![](https://geps.dev/progress/0)
+![](https://geps.dev/progress/100)
 - Seminario 2
 ![](https://geps.dev/progress/30)
+- Seminario 3 
+![](https://geps.dev/progress/0)
 - Seminario 3 
 ![](https://geps.dev/progress/0)
 ---
