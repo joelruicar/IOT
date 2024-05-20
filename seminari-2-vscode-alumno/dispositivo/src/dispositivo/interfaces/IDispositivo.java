@@ -5,6 +5,7 @@ import java.util.Collection;
 public interface IDispositivo {
 
 	public String getId();
+	public Boolean getHabilitado();
 	
 	public IDispositivo iniciar();
 	public IDispositivo detener();
