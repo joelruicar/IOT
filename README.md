@@ -15,7 +15,7 @@ Projecto de elavoración de las practicas de IoT para la asignatura de MUCNAP
 
 ### Installing
 
-* Descargar código y prepararlo en VSCode. Emplear la vista 'JAVA PROJECTS' para defini
+* Descargar código y prepararlo en VSCode. Emplear la vista 'JAVA PROJECTS' para definir su estructura.
 
 ### Executing program
 

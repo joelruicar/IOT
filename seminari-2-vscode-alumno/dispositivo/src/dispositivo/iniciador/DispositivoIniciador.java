@@ -30,8 +30,10 @@ public class DispositivoIniciador {
 		IFuncion f2 = Funcion.build("f2", FuncionStatus.OFF);
 		d.addFuncion(f2);
 
-		IFuncion f3 = Funcion.build("f3", FuncionStatus.BLINK);
+		IFuncion f3 = Funcion.build("f3", FuncionStatus.BLINK); // Ejercicio 1
 		d.addFuncion(f3);
+
+		
 		
 		// Arrancamos el dispositivo
 		d.iniciar();
