@@ -19,7 +19,7 @@ public class SmartCarStarterApp {
 		} catch (InterruptedException e) {
 		}
 
-		sc1.getIntoRoad(...);  // indicamos que el SmartCar está en tal segmento
-		sc1.notifyIncident(...);
+		//sc1.getIntoRoad(...);  // indicamos que el SmartCar está en tal segmento
+		//sc1.notifyIncident(...);
     }
 }

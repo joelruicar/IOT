@@ -10,7 +10,7 @@ import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 
 import utils.MySimpleLogger;
 
-public abstract class MyMqttClient implements MqttCallback {
+public class MyMqttClient implements MqttCallback {
 
 	protected MqttClient myClient;
 	protected String clientId = null;
@@ -125,6 +125,17 @@ public abstract class MyMqttClient implements MqttCallback {
 			e.printStackTrace();
 		}
 		
+	}
+
+	public void publish(String topic, String message) {
+		try {
+			System.out.println("publishing message:" + message);
+			System.out.println("in the topic:" + topic);
+			myClient.publish(topic, message.getBytes(), 0, false);
+			System.out.println("message published");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
