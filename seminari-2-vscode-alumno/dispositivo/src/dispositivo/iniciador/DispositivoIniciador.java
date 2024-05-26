@@ -22,11 +22,14 @@ public class DispositivoIniciador {
 		String mqttBroker = args[3];
 		
 		IDispositivo d = Dispositivo.build(deviceId, deviceIP, Integer.valueOf(port), mqttBroker);
-		
+
+		d.deshabilitar();
+
 		// Añadimos funciones al dispositivo
 		IFuncion f1 = Funcion.build("f1", FuncionStatus.OFF);
 		d.addFuncion(f1);
-		
+
+
 		IFuncion f2 = Funcion.build("f2", FuncionStatus.OFF);
 		d.addFuncion(f2);
 

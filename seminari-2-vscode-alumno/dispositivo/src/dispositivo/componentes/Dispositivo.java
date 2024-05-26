@@ -52,6 +52,14 @@ public class Dispositivo implements IDispositivo {
 		return this.deviceHabilitado;
 	}
 
+	public void habilitar() {
+		this.deviceHabilitado = true;
+	}
+
+	public void deshabilitar() {
+		this.deviceHabilitado = false;
+	}
+
 	protected Map<String, IFuncion> getFunctions() {
 		return this.functions;
 	}

@@ -76,26 +76,30 @@ public class Funcion_Recurso extends Recurso {
 		// Función encontrada
 		// Ejecutamos acción indicada en campo 'accion' del JSON recibido
 		JSONObject payload = null;
-		try {
-			payload = new JSONObject(entity.getText());
-			String action = payload.getString("accion");
-			
-			if ( action.equalsIgnoreCase("encender") )
-				f.encender();
-			else if ( action.equalsIgnoreCase("apagar") )
-				f.apagar();
-			else if ( action.equalsIgnoreCase("parpadear") )
-				f.parpadear();
-			else {
+		Boolean habilitado = this.getDispositivo_RESTApplication().getDispositivo().getHabilitado();
+		if (habilitado) {
+			try {
+				payload = new JSONObject(entity.getText());
+				String action = payload.getString("accion");
+				
+				if ( action.equalsIgnoreCase("encender") )
+					f.encender();
+				else if ( action.equalsIgnoreCase("apagar") )
+					f.apagar();
+				else if ( action.equalsIgnoreCase("parpadear") )
+					f.parpadear();
+				else {
+					MySimpleLogger.warn("Funcion-Recurso", "Acción '" + payload + "' no reconocida. Sólo admitidas: encender, apagar o parpadear");
+					return this.generateResponseWithErrorCode(Status.CLIENT_ERROR_BAD_REQUEST);
+				}
+				
+			} catch (JSONException | IOException e) {
 				MySimpleLogger.warn("Funcion-Recurso", "Acción '" + payload + "' no reconocida. Sólo admitidas: encender, apagar o parpadear");
 				return this.generateResponseWithErrorCode(Status.CLIENT_ERROR_BAD_REQUEST);
 			}
-			
-		} catch (JSONException | IOException e) {
-			MySimpleLogger.warn("Funcion-Recurso", "Acción '" + payload + "' no reconocida. Sólo admitidas: encender, apagar o parpadear");
-			return this.generateResponseWithErrorCode(Status.CLIENT_ERROR_BAD_REQUEST);
+		} else {
+			MySimpleLogger.info("Funcion-Recurso", "El dispositivo está desabilitado.");
 		}
-
 		
 		// Construimos el mensaje de respuesta
 
@@ -103,7 +107,6 @@ public class Funcion_Recurso extends Recurso {
     	
     	this.setStatus(Status.SUCCESS_OK);
         return new StringRepresentation(resultJSON.toString(), MediaType.APPLICATION_JSON);
-
 	}
     
     

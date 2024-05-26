@@ -6,6 +6,9 @@ public interface IDispositivo {
 
 	public String getId();
 	public Boolean getHabilitado();
+
+	public void habilitar();
+	public void deshabilitar();
 	
 	public IDispositivo iniciar();
 	public IDispositivo detener();

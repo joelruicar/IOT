@@ -19,6 +19,8 @@ import org.restlet.resource.Put;
 import dispositivo.interfaces.IDispositivo;
 import dispositivo.interfaces.IFuncion;
 
+import dispositivo.utils.MySimpleLogger;
+
 public class Dispositivo_Recurso extends Recurso {
 	
 	public static final String RUTA = "/dispositivo";
@@ -81,6 +83,16 @@ public class Dispositivo_Recurso extends Recurso {
 		try {
 			payload = new JSONObject(entity.getText());
 			String action = payload.getString("accion");
+			if (action.equalsIgnoreCase("habilitar")) {
+				d.habilitar();
+			}
+			else if (action.equalsIgnoreCase("deshabilitar")) {
+				d.deshabilitar();
+			}
+			else {
+				MySimpleLogger.warn("Dispositivo-Recurso", "Acción '" + payload + "' no reconocida. Sólo admitidas: habilitgar o deshabilitar.");
+				return this.generateResponseWithErrorCode(Status.CLIENT_ERROR_BAD_REQUEST);
+			}
 			
 
 		} catch (JSONException | IOException e) {
@@ -91,8 +103,8 @@ public class Dispositivo_Recurso extends Recurso {
 
 		JSONObject resultJSON = Dispositivo_Recurso.serialize(d);
     	
-    	this.setStatus(Status.SUCCESS_OK);
-        return new StringRepresentation(resultJSON.toString(), MediaType.APPLICATION_JSON);
+		this.setStatus(Status.SUCCESS_OK);
+		return new StringRepresentation(resultJSON.toString(), MediaType.APPLICATION_JSON);
 
 	}
     
