@@ -17,7 +17,7 @@ Progreso del trabajo:
 - Seminario 4
 ![](https://geps.dev/progress/0)
 ---
-- Projecto final
+- Proyecto final
 ![](https://geps.dev/progress/0)
 
 ## Getting Started
