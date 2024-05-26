@@ -3,6 +3,7 @@ package dispositivo.componentes;
 import dispositivo.interfaces.FuncionStatus;
 import dispositivo.interfaces.IFuncion;
 import dispositivo.utils.MySimpleLogger;
+import dispositivo.api.mqtt.FunctionPublisher_APIMQTT;
 
 public class Funcion implements IFuncion {
 	
@@ -10,6 +11,8 @@ public class Funcion implements IFuncion {
 
 	protected FuncionStatus initialStatus = null;
 	protected FuncionStatus status = null;
+
+	protected Boolean deviceHabilitado = false; // New
 	
 	private String loggerId = null;
 	
@@ -50,9 +53,22 @@ public class Funcion implements IFuncion {
 
 	@Override
 	public IFuncion parpadear() {
-
 		MySimpleLogger.info(this.loggerId, "==> Parpadear");
 		this.setStatus(FuncionStatus.BLINK);
+		return this;
+	}
+
+	@Override
+	public IFuncion habilitar() {
+		MySimpleLogger.info(this.loggerId, "==> Habilitar");
+		this.deviceHabilitado = true;
+		return this;
+	}
+
+	@Override
+	public IFuncion deshabilitar() {
+		MySimpleLogger.info(this.loggerId, "==> Deshabilitar");
+		this.deviceHabilitado = false;
 		return this;
 	}
 	
@@ -96,6 +112,5 @@ public class Funcion implements IFuncion {
 	public IFuncion detener() {
 		return this;
 	}
-	
-	
+
 }

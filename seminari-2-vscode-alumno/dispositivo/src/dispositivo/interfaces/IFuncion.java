@@ -10,6 +10,9 @@ public interface IFuncion {
 	public IFuncion encender();
 	public IFuncion apagar();
 	public IFuncion parpadear();
+
+	public IFuncion habilitar(); // New
+	public IFuncion deshabilitar(); // New
 	
 	public FuncionStatus getStatus();
 
