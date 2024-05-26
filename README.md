@@ -11,9 +11,9 @@ Progreso del trabajo:
 - Seminario 1
 ![](https://geps.dev/progress/100)
 - Seminario 2
-![](https://geps.dev/progress/30)
+![](https://geps.dev/progress/60)
 - Seminario 3 
-![](https://geps.dev/progress/0)
+![](https://geps.dev/progress/20)
 - Seminario 4
 ![](https://geps.dev/progress/0)
 ---
