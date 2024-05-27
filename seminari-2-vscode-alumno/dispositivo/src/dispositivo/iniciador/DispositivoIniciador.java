@@ -25,7 +25,7 @@ public class DispositivoIniciador {
 		
 		IDispositivo d = Dispositivo.build(deviceId, deviceIP, Integer.valueOf(port), mqttBroker);
 
-		FunctionPublisher_APIMQTT publisher_APIMQTT = FunctionPublisher_APIMQTT.build( d, mqttBroker);
+		FunctionPublisher_APIMQTT publisher_APIMQTT = FunctionPublisher_APIMQTT.build(  mqttBroker);
 
 		d.deshabilitar();
 
@@ -42,15 +42,21 @@ public class DispositivoIniciador {
 		// Arrancamos el dispositivo
 		d.iniciar();
 
-
-		publisher_APIMQTT.iniciar();
+		// Arrancar el publisher
+		publisher_APIMQTT.iniciar(d.getId());
 		
+		// Ej 7
+		String topic7 = Configuracion.TOPIC_BASE + "dispositivo/" + d.getId() + "/comandos";
+		String commando7 = "{'accion':'deshabilitar'}";
 		
-		String topic = Configuracion.TOPIC_BASE + "dispositivo/" + d.getId() + "/comandos";
-		String commando = "deshabilitar";
 
-		publisher_APIMQTT.publish_status(topic, commando);
+		publisher_APIMQTT.publish_status(topic7, commando7);
 
-}
+		// Ej 8
+		String topic8 = Configuracion.TOPIC_BASE + "dispositivo/" + d.getId() + "/funcion/" + f1.getId() + "/comandos";
+		String commando8 = "{'accion':'encender'}";
 
+		publisher_APIMQTT.publish_status(topic8, commando8);
+
+	}
 }

@@ -9,6 +9,7 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
+import org.json.JSONObject;
 
 import dispositivo.interfaces.Configuracion;
 import dispositivo.interfaces.IDispositivo;
@@ -59,11 +60,33 @@ public class Dispositivo_APIMQTT implements MqttCallback {
 		String payload = new String(message.getPayload());
 		
 		System.out.println("-------------------------------------------------");
-		System.out.println("| Topic:" + topic);
+		System.out.println("| Topic:" + topic); // -> dispositivo/{DISPOSITIVO-ID}/comandos
 		System.out.println("| Message: " + payload);
 		System.out.println("-------------------------------------------------");
 		
-		// DO SOME MAGIC HERE!
+		String[] topicNiveles = topic.split("/");
+
+
+		// parse payload to JSONObject
+		JSONObject jsonPayload = new JSONObject(payload);
+		
+		String action = jsonPayload.getString("accion");
+		
+		// Validate if the topic is a command topic for a function
+		if(!"funcion".equals(topicNiveles[topicNiveles.length-3])) {
+
+			if ( action.equalsIgnoreCase("habilitar") ){
+				MySimpleLogger.info(this.loggerId, "==> Habilitar");
+				this.dispositivo.habilitar();
+			}else if ( action.equalsIgnoreCase("deshabilitar") ){
+				MySimpleLogger.info(this.loggerId, "==> Deshabilitar");
+				this.dispositivo.deshabilitar();
+			}else
+				MySimpleLogger.warn(this.loggerId, "Acción '" + payload + "' no reconocida. Sólo admitidas: habilitar o deshabilitar");
+
+			System.out.println("-------------------------------------------------");
+			return;
+		}
 		
 		//
 		// Obtenemos el id de la función
@@ -71,23 +94,20 @@ public class Dispositivo_APIMQTT implements MqttCallback {
 		//         $topic_base/dispositivo/funcion/$ID-FUNCION/commamnd
 		//   Donde el $topic_base es parametrizable al arrancar el dispositivo
 		//   y la $ID-FUNCION es el identificador de la dunción
-		
-		String[] topicNiveles = topic.split("/");
 		String funcionId = topicNiveles[topicNiveles.length-2];
+		
 		
 		IFuncion f = this.dispositivo.getFuncion(funcionId);
 		if ( f == null ) {
 			MySimpleLogger.warn(this.loggerId, "No encontrada funcion " + funcionId);
 			return;
 		}
-		
-		
+
 		//
 		// Definimos una API con mensajes de acciones básicos
 		//
 
 		// Ejecutamos acción indicada en campo 'accion' del JSON recibido
-		String action = payload;
 		
 		if ( action.equalsIgnoreCase("encender") )
 			f.encender();
@@ -98,7 +118,7 @@ public class Dispositivo_APIMQTT implements MqttCallback {
 		else
 			MySimpleLogger.warn(this.loggerId, "Acción '" + payload + "' no reconocida. Sólo admitidas: encender, apagar o parpadear");
 
-		
+		System.out.println("-------------------------------------------------");
 		
 	}
 
@@ -192,8 +212,10 @@ public class Dispositivo_APIMQTT implements MqttCallback {
 		if ( this.dispositivo == null )
 			return;
 		
-		for(IFuncion f : this.dispositivo.getFunciones())
+		for(IFuncion f : this.dispositivo.getFunciones()) {
 			this.subscribe(this.calculateCommandTopic(f));
+		}
+		this.subscribe(this.calculateTopic()); // Formato dispositivo/{DISPOSITIVO-ID}/comandos
 
 	}
 	
@@ -206,7 +228,6 @@ public class Dispositivo_APIMQTT implements MqttCallback {
 		
 	}
 	
-	
 	protected String calculateCommandTopic(IFuncion f) {
 		return Configuracion.TOPIC_BASE + "dispositivo/" + dispositivo.getId() + "/funcion/" + f.getId() + "/comandos";
 	}
@@ -214,6 +235,9 @@ public class Dispositivo_APIMQTT implements MqttCallback {
 	protected String calculateInfoTopic(IFuncion f) {
 		return Configuracion.TOPIC_BASE + "dispositivo/" + dispositivo.getId() + "/funcion/" + f.getId() + "/info";
 	}
-	
+
+	protected String calculateTopic() {
+		return Configuracion.TOPIC_BASE + "dispositivo/" + dispositivo.getId() + "/comandos";
+	}
 
 }
