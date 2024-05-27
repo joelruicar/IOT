@@ -26,10 +26,19 @@ public class Dispositivo_APIMQTT implements MqttCallback {
 	protected String mqttBroker = null;
 	
 	private String loggerId = null;
+
+	FunctionPublisher_APIMQTT publisher_APIMQTT = null;
 	
 	public static Dispositivo_APIMQTT build(IDispositivo dispositivo, String brokerURL) {
 		Dispositivo_APIMQTT api = new Dispositivo_APIMQTT(dispositivo);
 		api.setBroker(brokerURL);
+		return api;
+	}
+
+	public static Dispositivo_APIMQTT build(IDispositivo dispositivo, String brokerURL, FunctionPublisher_APIMQTT publisher_APIMQTT) {
+		Dispositivo_APIMQTT api = new Dispositivo_APIMQTT(dispositivo);
+		api.setBroker(brokerURL);
+		api.setPublisher(publisher_APIMQTT);
 		return api;
 	}
 	
@@ -71,6 +80,8 @@ public class Dispositivo_APIMQTT implements MqttCallback {
 		JSONObject jsonPayload = new JSONObject(payload);
 		
 		String action = jsonPayload.getString("accion");
+
+		
 		
 		// Validate if the topic is a command topic for a function
 		if(!"funcion".equals(topicNiveles[topicNiveles.length-3])) {
@@ -87,7 +98,7 @@ public class Dispositivo_APIMQTT implements MqttCallback {
 			System.out.println("-------------------------------------------------");
 			return;
 		}
-		
+
 		//
 		// Obtenemos el id de la función
 		//   Los topics están organizados de la siguiente manera:
@@ -95,7 +106,6 @@ public class Dispositivo_APIMQTT implements MqttCallback {
 		//   Donde el $topic_base es parametrizable al arrancar el dispositivo
 		//   y la $ID-FUNCION es el identificador de la dunción
 		String funcionId = topicNiveles[topicNiveles.length-2];
-		
 		
 		IFuncion f = this.dispositivo.getFuncion(funcionId);
 		if ( f == null ) {
@@ -108,14 +118,20 @@ public class Dispositivo_APIMQTT implements MqttCallback {
 		//
 
 		// Ejecutamos acción indicada en campo 'accion' del JSON recibido
+		if (!"info".equals(topicNiveles[topicNiveles.length-1])){
+			// Si es una acción se manda un mensaje con el estado de la función.
+			String topicinfo = Configuracion.TOPIC_BASE + "dispositivo/" + this.dispositivo.getId() + "/funcion/" + f.getId() + "/info";
+			String commandoinfo = payload;
+			publisher_APIMQTT.publish_status(topicinfo, commandoinfo);
+		}
 		
-		if ( action.equalsIgnoreCase("encender") )
+		if ( action.equalsIgnoreCase("encender") ){
 			f.encender();
-		else if ( action.equalsIgnoreCase("apagar") )
+		}else if ( action.equalsIgnoreCase("apagar") ){
 			f.apagar();
-		else if ( action.equalsIgnoreCase("parpadear") )
+		}else if ( action.equalsIgnoreCase("parpadear") ){
 			f.parpadear();
-		else
+		}else
 			MySimpleLogger.warn(this.loggerId, "Acción '" + payload + "' no reconocida. Sólo admitidas: encender, apagar o parpadear");
 
 		System.out.println("-------------------------------------------------");
@@ -238,6 +254,10 @@ public class Dispositivo_APIMQTT implements MqttCallback {
 
 	protected String calculateTopic() {
 		return Configuracion.TOPIC_BASE + "dispositivo/" + dispositivo.getId() + "/comandos";
+	}
+
+	public void setPublisher(FunctionPublisher_APIMQTT publisher_APIMQTT) {
+		this.publisher_APIMQTT = publisher_APIMQTT;
 	}
 
 }
