@@ -29,9 +29,9 @@ public class FunctionPublisher_APIMQTT implements MqttCallback {
 
 
 
-	public void publish_status(String dispositivoId, String commando) {
+	public void publish_status(String topic, String commando) {
 		try { 
-			String topic = Configuracion.TOPIC_BASE + "dispositivo/" + dispositivoId + "/comandos";
+			
 			MqttMessage message = new MqttMessage(commando.getBytes());
 			message.setQos(0);
 			myClient.publish(topic, message);
@@ -42,7 +42,7 @@ public class FunctionPublisher_APIMQTT implements MqttCallback {
 	public static FunctionPublisher_APIMQTT build(IDispositivo dispositivo, String brokerURL) {
 		FunctionPublisher_APIMQTT api = new FunctionPublisher_APIMQTT(dispositivo);
 		api.setBroker(brokerURL);
-		
+
 		return api;
 	}
 	
@@ -78,8 +78,23 @@ public class FunctionPublisher_APIMQTT implements MqttCallback {
 		System.out.println("| Message: " + payload);
 		System.out.println("-------------------------------------------------");
 		
-		// DO SOME MAGIC HERE!
+		String[] topicNiveles = topic.split("/");
 		
+		// DO SOME MAGIC HERE!
+		// Validate if the topic is a command topic for a function
+		if(!"funcion".equals(topicNiveles[topicNiveles.length-3])) {
+			String action = payload;
+
+			if ( action.equalsIgnoreCase("habilitar") )
+				this.dispositivo.habilitar();
+			else if ( action.equalsIgnoreCase("deshabilitar") )
+				this.dispositivo.deshabilitar();
+			else
+				MySimpleLogger.warn(this.loggerId, "Acción '" + payload + "' no reconocida. Sólo admitidas: encender, apagar o parpadear");
+
+			System.out.println("-------------------------------------------------");
+			return;
+		}
 		
 		//
 		// Obtenemos el id de la función
@@ -87,9 +102,8 @@ public class FunctionPublisher_APIMQTT implements MqttCallback {
 		//         $topic_base/dispositivo/funcion/$ID-FUNCION/commamnd
 		//   Donde el $topic_base es parametrizable al arrancar el dispositivo
 		//   y la $ID-FUNCION es el identificador de la dunción
-		
-		String[] topicNiveles = topic.split("/");
 		String funcionId = topicNiveles[topicNiveles.length-2];
+		
 		
 		IFuncion f = this.dispositivo.getFuncion(funcionId);
 		if ( f == null ) {
@@ -216,12 +230,12 @@ public class FunctionPublisher_APIMQTT implements MqttCallback {
 		
 		if ( this.dispositivo == null )
 			return;
-		
-		for(IFuncion f : this.dispositivo.getFunciones())
-			this.subscribe(this.calculateCommandTopic(f));
 
+		for(IFuncion f : this.dispositivo.getFunciones()) {
+			this.subscribe(this.calculateCommandTopic(f));
+		}
+		this.subscribe(this.calculateTopic()); // Formato dispositivo/{DISPOSITIVO-ID}/comandos
 	}
-	
 	
 	
 	public void detener() {
@@ -234,6 +248,10 @@ public class FunctionPublisher_APIMQTT implements MqttCallback {
 	
 	protected String calculateCommandTopic(IFuncion f) {
 		return Configuracion.TOPIC_BASE + "dispositivo/" + dispositivo.getId() + "/funcion/" + f.getId() + "/comandos";
+	}
+
+	protected String calculateTopic() {
+		return Configuracion.TOPIC_BASE + "dispositivo/" + dispositivo.getId() + "/comandos";
 	}
 	
 	protected String calculateInfoTopic(IFuncion f) {

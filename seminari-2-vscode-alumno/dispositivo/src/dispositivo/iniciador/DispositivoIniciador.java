@@ -3,6 +3,7 @@ package dispositivo.iniciador;
 import dispositivo.api.mqtt.FunctionPublisher_APIMQTT;
 import dispositivo.componentes.Dispositivo;
 import dispositivo.componentes.Funcion;
+import dispositivo.interfaces.Configuracion;
 import dispositivo.interfaces.FuncionStatus;
 import dispositivo.interfaces.IDispositivo;
 import dispositivo.interfaces.IFuncion;
@@ -45,10 +46,10 @@ public class DispositivoIniciador {
 		publisher_APIMQTT.iniciar();
 		
 		
-		String dispositivoId = d.getId();
-		String commando = "{'accion':'deshabilitar'}";
+		String topic = Configuracion.TOPIC_BASE + "dispositivo/" + d.getId() + "/comandos";
+		String commando = "deshabilitar";
 
-		publisher_APIMQTT.publish_status(dispositivoId, commando);
+		publisher_APIMQTT.publish_status(topic, commando);
 
 }
 
