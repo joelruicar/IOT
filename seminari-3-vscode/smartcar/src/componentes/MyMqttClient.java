@@ -17,11 +17,18 @@ public class MyMqttClient implements MqttCallback {
 	protected String brokerURL = null;
 
 	protected SmartCar smartcar = null;
+	protected TrafficSignal trafficSignal = null;
 
 	
 	public MyMqttClient(String clientId, SmartCar smartcar, String MQTTBrokerURL) {
 		this.clientId = clientId;
 		this.smartcar = smartcar;
+		this.brokerURL = MQTTBrokerURL;
+	}
+
+	public MyMqttClient(String clientId, TrafficSignal trafficSignal, String MQTTBrokerURL) {
+		this.clientId = clientId;
+		this.trafficSignal = trafficSignal;
 		this.brokerURL = MQTTBrokerURL;
 	}
 
