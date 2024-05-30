@@ -11,7 +11,7 @@ Progreso del trabajo:
 - Seminario 1
 ![](https://geps.dev/progress/100)
 - Seminario 2
-![](https://geps.dev/progress/60)
+![](https://geps.dev/progress/100)
 - Seminario 3 
 ![](https://geps.dev/progress/20)
 - Seminario 4
@@ -54,6 +54,10 @@ command to run if program contains helper info
 Contributors names and contact info
 
 [@joralgra](https://github.com/joralgra)
+[@Supergrefu](https://github.com/Supergrefu)
+[@apdelsm](https://github.com/apdelsm)
+[@joelruicar](https://github.com/joelruicar)
+[@LizetChamorro](https://github.com/LizetChamorro)
 
 ## Version History
 
