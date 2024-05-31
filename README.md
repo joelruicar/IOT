@@ -10,10 +10,22 @@ Progreso del trabajo:
 
 - Seminario 1
 ![](https://geps.dev/progress/100)
+  
 - Seminario 2
 ![](https://geps.dev/progress/100)
+Hecho por:
+      Jordi Almendros: 
+      Abdel Sandoval: 1, 2, 3, 4, 5, 6
+      Joel Ruiz: 1, 2, 3 , 4, 5, 6, 7
+      Lizet Chamorro:
+  
 - Seminario 3 
-![](https://geps.dev/progress/20)
+![](https://geps.dev/progress/100)
+Hecho por:
+      Abdel Sandoval: 1
+      Joel Ruiz: 1
+      Roberto Alfonso:
+  
 - Seminario 4
 ![](https://geps.dev/progress/0)
 ---
