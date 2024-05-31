@@ -14,11 +14,11 @@ Progreso del trabajo:
 - Seminario 2
 ![](https://geps.dev/progress/100)
 Hecho por:
-      Jordi Almendros: 3, 4, 5, 6
+      Jordi Almendros: 1, 2, 3, 7, 8, 9
       Abdel Sandoval: 1, 2, 3, 4, 5, 6
       Joel Ruiz: 1, 2, 3, 4, 5, 6, 7
       Roberto Alfonso:
-      Lizet Chamorro: 3, 4, 5, 6
+      Lizet Chamorro: 7, 8, 9
   
 - Seminario 3 
 ![](https://geps.dev/progress/100)
