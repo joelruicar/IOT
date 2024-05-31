@@ -24,7 +24,7 @@ Hecho por:
 Hecho por:
       Abdel Sandoval: 1
       Joel Ruiz: 1
-      Roberto Alfonso:
+      Roberto Alfonso: 1, 2, 3, 4, 5
   
 - Seminario 4
 ![](https://geps.dev/progress/0)
