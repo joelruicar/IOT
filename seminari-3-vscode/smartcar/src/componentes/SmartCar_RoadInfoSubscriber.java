@@ -23,12 +23,7 @@ public class SmartCar_RoadInfoSubscriber extends MyMqttClient {
 
 		JSONObject obj = new JSONObject(payload);
 
-
-		// System.out.println("Test1--------------------------------------------------##################" + obj.getString("type"));
 		if(obj.getString("type").equals("TRAFFIC_SIGNAL")){
-
-			// System.out.println("Test2--------------------------------------------------########################################################################");
-			// JSONObject msg = obj.getString("type");
 			JSONObject msg = obj.getJSONObject("msg");
 			if(msg.getString("signal-type").equals("SPEED_LIMIT")){
 				try{
@@ -38,8 +33,20 @@ public class SmartCar_RoadInfoSubscriber extends MyMqttClient {
 				catch (Exception e){
 					e.printStackTrace();
 				}
-				// String value = msg.getString("value");
-				// MySimpleLogger.trace(this.clientId, "| Vehicle speed limit change to " + value + "km/h");
+			}
+		}
+
+		if(obj.getString("type").equals("ROAD_INCIDENT")){
+			JSONObject msg = obj.getJSONObject("msg");
+			if(msg.getString("incident-type").equals("TRAFFIC_ACCIDENT")){
+				try{
+					MySimpleLogger.trace(this.clientId, "| Accidente: " + msg.getString("description") 
+					                                                    + " ; Inicio(km): " + msg.getInt("starting-position")
+																		+ " ; Fin(km)"      + msg.getInt("end-position"));
+				}
+				catch (Exception e){
+					e.printStackTrace();
+				}
 			}
 		}
 		

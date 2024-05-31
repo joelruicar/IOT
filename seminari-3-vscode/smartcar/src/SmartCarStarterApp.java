@@ -31,22 +31,32 @@ public class SmartCarStarterApp {
 
         SmartCar sc6 = new SmartCar(smartCarID + "6", brokerURL);
 		sc6.setCurrentRoadPlace(new RoadPlace("R1s1", 0));
+
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+		}
+		System.out.println("####################################################################################");
 		
 		TrafficSignal tf1 = new TrafficSignal("TL_atR1S3_542", brokerURL);
 		tf1.setCurrentRoadPlace(new RoadPlace("R1s1", 0), "SPEED_LIMIT", "20", 0, 0);
 
+		System.out.println("####################################################################################");
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 		}
+		System.out.println("####################################################################################");
 
 		sc4.notifyIncident("Vehiculo con rueda pinchada");
 
+		System.out.println("####################################################################################");
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 		}
 
+		System.out.println("####################################################################################");
 		sc1.vehicleStop(null);
 		sc2.vehicleStop(null);
 		sc3.vehicleStop(null);

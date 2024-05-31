@@ -1,12 +1,12 @@
 package componentes;
 
-import utils.MySimpleLogger;
+// import utils.MySimpleLogger;
 
 import java.time.Instant;  
 
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
+// import org.eclipse.paho.client.mqttv3.MqttClient;
+// import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+// import org.eclipse.paho.client.mqttv3.MqttException;
 import org.json.JSONObject;
 
 public class TrafficSignal {
