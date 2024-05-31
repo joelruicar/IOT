@@ -1,0 +1,1 @@
+Sirve para añadir una URL base en caso de ser necesaria, para no tener que repetirla en todas las llamadas que se le haga
