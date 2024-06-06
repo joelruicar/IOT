@@ -20,6 +20,28 @@ public class InfoPanel_RoadInfoSubscriber extends MyMqttClient {
 		this.infoPanel = infoPanel;
 	}
 
+	@Override
+	public void messageArrived(String topic, MqttMessage message) throws Exception {
+		// super.messageArrived(topic, message);
+		String payload = new String(message.getPayload());
+		JSONObject obj = new JSONObject(payload);
+
+		if (obj.getString("type").equals("ROAD_STATUS")) {
+			JSONObject msg = obj.getJSONObject("msg");
+			if (msg.getString("status").toUpperCase().equals("Mostly_Free_Flow".toUpperCase()) || 
+				msg.getString("status").toUpperCase().equals(       "Free_Flow".toUpperCase())) {
+				infoPanel.f("apagar", "f1");
+			}
+			else if (msg.getString("status").toUpperCase().equals("Limited_Manouvers".toUpperCase())) {
+				infoPanel.f("parpadear", "f1");
+			}
+			else if (msg.getString("status").toUpperCase().equals("No_Manouvers".toUpperCase()) || 
+				     msg.getString("status").toUpperCase().equals(   "Collapsed".toUpperCase())) {
+				infoPanel.f("encender", "f1");
+			}
+		}
+	}
+
 	// public SmartCar_RoadInfoSubscriber(String clientId, InfoPanel smartcar, String MQTTBrokerURL) {
 	// 	super(clientId, smartcar, MQTTBrokerURL);
 	// 	this.smartcar = smartcar;

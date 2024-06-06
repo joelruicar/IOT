@@ -1,3 +1,6 @@
+import componentes.InfoPanel;
+import componentes.RoadPlace;
+
 public class InfoPanelStarterApp {
   public static void main(String[] args) throws Exception {
 
@@ -11,7 +14,10 @@ public class InfoPanelStarterApp {
 		String brokerURL = args[1];
     String deviceID = args[2];
 
-    
+    InfoPanel infoPanel = new InfoPanel(infoPanelID, brokerURL, deviceID);
+    infoPanel.setCurrentRoadPlace(new RoadPlace("R1s1", 0));
+
+
 
   }
 }

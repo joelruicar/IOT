@@ -9,7 +9,6 @@ import java.time.Instant;
 // import org.eclipse.paho.client.mqttv3.MqttException;
 import org.json.JSONObject;
 
-import componentes_old.SmartCar_RoadInfoSubscriber;
 
 public class InfoPanel {
 
@@ -17,8 +16,9 @@ public class InfoPanel {
 	protected String brokerURL = null;
 	protected String infoPanelID = null;
 	protected String deviceID = null;
+
 	protected RoadPlace rp = null;	// simula la ubicación actual
-	protected SmartCar_RoadInfoSubscriber subscriber = null;
+	protected InfoPanel_RoadInfoSubscriber subscriber = null;
 	// protected SmartCar_InicidentNotifier notifier = null;
 	protected MyMqttClient publisher = null;
 	protected String baseTopic = "es/upv/pros/tatami/smartcities/traffic/PTPaterna";
@@ -34,12 +34,16 @@ public class InfoPanel {
 		// this.notifier.connect();
 		this.publisher = new MyMqttClient(id+".traffic",this, this.brokerURL);
 		publisher.connect();
-		this.subscriber = new SmartCar_RoadInfoSubscriber(id, this, brokerURL);
+		this.subscriber = new InfoPanel_RoadInfoSubscriber(id, this, brokerURL);
 		subscriber.connect();
 	}
 
 	public void f(String state, String target){
+		System.out.println("State: " + state + "; target: " + target);
+		String topic = "dispositivo/" + this.deviceID + "/funcion/" + target + "/comandos";
+		String message = buildMessage(state);
 
+		this.publisher.publish(topic, message);
 	}
 	
 	
@@ -51,37 +55,28 @@ public class InfoPanel {
 	// 	return smartCarID;
 	// }
 
-	// public void setCurrentRoadPlace(RoadPlace rp) {
-	// 	// 1.- Si ya teníamos algún suscriptor conectado al tramo de carretera antiguo, primero los desconectamos
-	// 	if (this.rp != rp && rp != null && this.rp != null) {
-	// 		try {
-	// 			String message = buildMessage("VEHICLE_OUT", "PrivateUsage");
-	// 			this.publisher.publish(this.baseTopic + "/road/" + this.rp.getRoad() + "/traffic", message);
-	// 			subscriber.unsubscribe(this.baseTopic + "/road/" + this.rp.getRoad() + "/info");
-	// 			subscriber.unsubscribe(this.baseTopic + "/road/" + this.rp.getRoad() + "/signals");
-	// 			this.rp = rp;
-	// 			message = buildMessage("VEHICLE_IN", "PrivateUsage");
-	// 			this.publisher.publish(this.baseTopic + "/road/" + this.rp.getRoad() + "/traffic", message);
-	// 			subscriber.subscribe(this.baseTopic + "/road/" + this.rp.getRoad() + "/info");
-	// 			subscriber.subscribe(this.baseTopic + "/road/" + this.rp.getRoad() + "/signals");
-	// 		} catch (Exception e) {
-	// 			e.printStackTrace();
-	// 		}
-	// 	}
-	// 	// 2.- Ahora debemos crear suscriptor/es para conocer 'cosas' de dicho tramo de carretra, y conectarlo/s
-	// 	// 3.- Debemos suscribir este/os suscriptor/es a los canales adecuados
-	// 	else if (this.rp == null && rp != null) {
-	// 		this.rp = rp;
-	// 		try {
-	// 			String message = buildMessage("VEHICLE_IN", "PrivateUsage");
-	// 			this.publisher.publish(this.baseTopic + "/road/" + this.rp.getRoad() +"/traffic", message);
-	// 			subscriber.subscribe(this.baseTopic + "/road/"+this.rp.getRoad()+"/info");
-	// 			subscriber.subscribe(this.baseTopic + "/road/"+this.rp.getRoad()+"/signals");
-	// 		} catch (Exception e) {
-	// 			e.printStackTrace();
-	// 		}
-	// 	}
-	// }
+	public void setCurrentRoadPlace(RoadPlace rp) {
+		// 1.- Si ya teníamos algún suscriptor conectado al tramo de carretera antiguo, primero los desconectamos
+		if (this.rp != rp && rp != null && this.rp != null) {
+			try {
+				subscriber.unsubscribe(this.baseTopic + "/road/" + this.rp.getRoad() + "/info");
+				this.rp = rp;
+				subscriber.subscribe(this.baseTopic + "/road/" + this.rp.getRoad() + "/info");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// 2.- Ahora debemos crear suscriptor/es para conocer 'cosas' de dicho tramo de carretra, y conectarlo/s
+		// 3.- Debemos suscribir este/os suscriptor/es a los canales adecuados
+		else if (this.rp == null && rp != null) {
+			this.rp = rp;
+			try {
+				subscriber.subscribe(this.baseTopic + "/road/"+this.rp.getRoad()+"/info");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	// public void vehicleStop(RoadPlace rp) {
 	// 	try {
@@ -93,26 +88,15 @@ public class InfoPanel {
 	// 	}
 	// }
 
-	// private String buildMessage(String action, String role) {
-	// 	JSONObject message = new JSONObject();
-	// 	JSONObject completeMessage = new JSONObject();
-	// 	Instant timestamp =  Instant.now();
-	// 	try {
-	// 		completeMessage.put("id", "MSG_" + timestamp.getEpochSecond());
-	// 		completeMessage.put("type", "TRAFFIC");
-	// 		completeMessage.put("timestamp", timestamp.getEpochSecond());
-	// 		message.put("action", action);
-	// 		message.put("road", this.rp.getRoad().split("s")[0]);
-	// 		message.put("road-segment", this.rp.getRoad());
-	// 		message.put("vehicle-id", this.smartCarID);
-	// 		message.put("position", this.rp.getKm());
-	// 		message.put("role", role);
-	// 		completeMessage.put("msg", message);
-	// 	} catch(Exception e) {
-	// 		e.printStackTrace();
-	// 	}
-	// 	return completeMessage.toString();
-	// }
+	private String buildMessage(String state) {
+		JSONObject completeMessage = new JSONObject();
+		try {
+			completeMessage.put("accion", state);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return completeMessage.toString();
+	}
 
 	// public RoadPlace getCurrentPlace() {
 	// 	return rp;
