@@ -1,6 +1,6 @@
 {
     "java.project.sourcePaths": [
-        "smartcar/src"
+        "infopanel/src"
     ],
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
