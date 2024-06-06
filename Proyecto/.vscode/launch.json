@@ -6,12 +6,13 @@
     "configurations": [
         {
             "type": "java",
-            "name": "SmartCarStarterApp",
+            "name": "InfoPanelStarterApp",
             "request": "launch",
-            "mainClass": "SmartCarStarterApp",
+            "mainClass": "InfoPanelStarterApp",
             "args": [
-                "SmartCar-1234ABC",
-                "tcp://ttmi008.iot.upv.es:1883"
+                "InfoPanel-1234ABC",
+                "tcp://ttmi008.iot.upv.es:1883",
+                "ttmi061"
             ]
         }
     ]

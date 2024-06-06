@@ -1,4 +1,4 @@
-package componentes;
+package componentes_old;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -16,26 +16,21 @@ public class MyMqttClient implements MqttCallback {
 	protected String clientId = null;
 	protected String brokerURL = null;
 
-	protected InfoPanel infoPanel = null;
-	// protected TrafficSignal trafficSignal = null;
+	protected SmartCar smartcar = null;
+	protected TrafficSignal trafficSignal = null;
 
-	public MyMqttClient(String clientId, InfoPanel infoPanel, String MQTTBrokerURL) {
-		this.clientId = clientId;
-		this.brokerURL = MQTTBrokerURL;
-		this.infoPanel = infoPanel;
-	}
 	
-	// public MyMqttClient(String clientId, SmartCar smartcar, String MQTTBrokerURL) {
-	// 	this.clientId = clientId;
-	// 	this.smartcar = smartcar;
-	// 	this.brokerURL = MQTTBrokerURL;
-	// }
+	public MyMqttClient(String clientId, SmartCar smartcar, String MQTTBrokerURL) {
+		this.clientId = clientId;
+		this.smartcar = smartcar;
+		this.brokerURL = MQTTBrokerURL;
+	}
 
-	// public MyMqttClient(String clientId, TrafficSignal trafficSignal, String MQTTBrokerURL) {
-	// 	this.clientId = clientId;
-	// 	this.trafficSignal = trafficSignal;
-	// 	this.brokerURL = MQTTBrokerURL;
-	// }
+	public MyMqttClient(String clientId, TrafficSignal trafficSignal, String MQTTBrokerURL) {
+		this.clientId = clientId;
+		this.trafficSignal = trafficSignal;
+		this.brokerURL = MQTTBrokerURL;
+	}
 
 
 	@Override
