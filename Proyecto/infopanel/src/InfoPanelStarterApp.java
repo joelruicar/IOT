@@ -1,5 +1,7 @@
+import componentes.Funcion;
 import componentes.InfoPanel;
 import componentes.RoadPlace;
+import interfaces.FuncionStatus;
 
 public class InfoPanelStarterApp {
   public static void main(String[] args) throws Exception {
@@ -16,6 +18,15 @@ public class InfoPanelStarterApp {
 
     InfoPanel infoPanel = new InfoPanel(infoPanelID, brokerURL, deviceID);
     infoPanel.setCurrentRoadPlace(new RoadPlace("R1s1", 0));
+
+    Funcion f1 = Funcion.build("f1", FuncionStatus.OFF);
+		infoPanel.addFuncion(f1);
+
+		Funcion f2 = Funcion.build("f2", FuncionStatus.OFF);
+		infoPanel.addFuncion(f2);
+
+		Funcion f3 = Funcion.build("f3", FuncionStatus.OFF);
+		infoPanel.addFuncion(f3);
 
 
 

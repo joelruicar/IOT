@@ -9,6 +9,7 @@ import java.io.IOException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONObject;
 
+import interfaces.IFuncion;
 import utils.MySimpleLogger;
 
 public class InfoPanel_RoadInfoSubscriber extends MyMqttClient {
@@ -30,14 +31,17 @@ public class InfoPanel_RoadInfoSubscriber extends MyMqttClient {
 			JSONObject msg = obj.getJSONObject("msg");
 			if (msg.getString("status").toUpperCase().equals("Mostly_Free_Flow".toUpperCase()) || 
 				msg.getString("status").toUpperCase().equals(       "Free_Flow".toUpperCase())) {
-				infoPanel.f("apagar", "f1");
+				// infoPanel.f("apagar", "f1");
+				infoPanel.getFuncion("f1").apagar();
 			}
 			else if (msg.getString("status").toUpperCase().equals("Limited_Manouvers".toUpperCase())) {
-				infoPanel.f("parpadear", "f1");
+				// infoPanel.f("parpadear", "f1");
+				infoPanel.getFuncion("f1").parpadear();
 			}
 			else if (msg.getString("status").toUpperCase().equals("No_Manouvers".toUpperCase()) || 
 				     msg.getString("status").toUpperCase().equals(   "Collapsed".toUpperCase())) {
-				infoPanel.f("encender", "f1");
+				// infoPanel.f("encender", "f1");
+				infoPanel.getFuncion("f1").encender();
 			}
 		}
 	}

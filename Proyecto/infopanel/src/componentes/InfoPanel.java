@@ -2,12 +2,16 @@ package componentes;
 
 // import utils.MySimpleLogger;
 
-import java.time.Instant;  
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 // import org.eclipse.paho.client.mqttv3.MqttClient;
 // import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 // import org.eclipse.paho.client.mqttv3.MqttException;
 import org.json.JSONObject;
+
+import interfaces.IFuncion;
 
 
 public class InfoPanel {
@@ -16,6 +20,8 @@ public class InfoPanel {
 	protected String brokerURL = null;
 	protected String infoPanelID = null;
 	protected String deviceID = null;
+
+	protected Map<String, IFuncion> functions = null;
 
 	protected RoadPlace rp = null;	// simula la ubicación actual
 	protected InfoPanel_RoadInfoSubscriber subscriber = null;
@@ -38,13 +44,14 @@ public class InfoPanel {
 		subscriber.connect();
 	}
 
-	public void f(String state, String target){
-		System.out.println("State: " + state + "; target: " + target);
-		String topic = "dispositivo/" + this.deviceID + "/funcion/" + target + "/comandos";
-		String message = buildMessage(state);
+	// public void f(String state, String target){
+		// System.out.println("State: " + state + "; target: " + target);
+		// String topic = "dispositivo/" + this.deviceID + "/funcion/" + target + "/comandos";
+		// String message = buildMessage(state);
 
-		this.publisher.publish(topic, message);
-	}
+		// this.publisher.publish(topic, message);
+
+	// }
 	
 	
 	// public void setSmartCarID(String smartCarID) {
@@ -87,6 +94,27 @@ public class InfoPanel {
 	// 		e.printStackTrace();
 	// 	}
 	// }
+
+	protected Map<String, IFuncion> getFunctions() {
+		return this.functions;
+	}
+	
+	protected void setFunctions(Map<String, IFuncion> fs) {
+		this.functions = fs;
+	}
+
+	public IFuncion getFuncion(String funcionId) {
+		if ( this.getFunctions() == null )
+			return null;
+		return this.getFunctions().get(funcionId);
+	}
+
+	public void addFuncion(IFuncion f) {
+		if ( this.getFunctions() == null )
+			this.setFunctions(new HashMap<String, IFuncion>());
+		this.getFunctions().put(f.getId(), f);
+		return;
+	}
 
 	private String buildMessage(String state) {
 		JSONObject completeMessage = new JSONObject();
