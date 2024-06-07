@@ -28,7 +28,5 @@ public class InfoPanelStarterApp {
 		Funcion f3 = Funcion.build("f3", FuncionStatus.OFF);
 		infoPanel.addFuncion(f3);
 
-
-
   }
 }

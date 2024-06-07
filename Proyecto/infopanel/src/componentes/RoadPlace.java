@@ -3,19 +3,19 @@ package componentes;
 public class RoadPlace {
 
 	protected String road = null;
-	protected int km = 0;
+	protected int m = 0;
 	
-	public RoadPlace(String road, int km) {
+	public RoadPlace(String road, int m) {
 		this.road = road;
-		this.km = km;
+		this.m = m;
 	}
 	
-	public void setKm(int km) {
-		this.km = km;
+	public void setM(int m) {
+		this.m = m;
 	}
 	
-	public int getKm() {
-		return km;
+	public int getM() {
+		return m;
 	}
 	
 	public String getRoad() {

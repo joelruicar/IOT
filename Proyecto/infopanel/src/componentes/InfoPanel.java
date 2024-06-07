@@ -24,6 +24,7 @@ public class InfoPanel {
 	protected Map<String, IFuncion> functions = null;
 
 	protected ArrayList<String> accidentes;
+	protected Map<String,Integer> especiales;
 
 	protected RoadPlace rp = null;	// simula la ubicación actual
 	protected InfoPanel_RoadInfoSubscriber subscriber = null;
@@ -104,6 +105,23 @@ public class InfoPanel {
 			this.accidentes.remove(accidente);
 
 		if(this.accidentes.size() == 0)
+			this.getFuncion("f2").apagar();
+	}
+
+	public void setEspeciales(String especial, int posicion){
+		if(!this.especiales.contains(especial))
+			this.especiales.add(especial);
+		
+		int rel_pos = this.rp.getM() - 200;
+		if( rel_pos < 200 && rel_pos > -200 )
+			this.getFuncion("f3").encender();
+	}
+
+	public void removeEspeciales(String especial){
+		if(this.especiales.contains(especial))
+			this.especiales.remove(especial);
+
+		if(this.especiales.size() == 0)
 			this.getFuncion("f2").apagar();
 	}
 
