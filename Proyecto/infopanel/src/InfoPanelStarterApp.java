@@ -17,7 +17,8 @@ public class InfoPanelStarterApp {
     String deviceID = args[2];
 
     InfoPanel infoPanel = new InfoPanel(infoPanelID, brokerURL, deviceID);
-    infoPanel.setCurrentRoadPlace(new RoadPlace("R1s1", 0));
+    // infoPanel.setCurrentRoadPlace(new RoadPlace("R1s1", 300));
+    infoPanel.setCurrentRoadPlace(new RoadPlace("R1s2d", 300));
 
     Funcion f1 = Funcion.build("f1", FuncionStatus.OFF);
 		infoPanel.addFuncion(f1);
