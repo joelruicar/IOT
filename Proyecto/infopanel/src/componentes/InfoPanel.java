@@ -3,6 +3,7 @@ package componentes;
 // import utils.MySimpleLogger;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +14,6 @@ import org.json.JSONObject;
 
 import interfaces.IFuncion;
 
-
 public class InfoPanel {
 
 
@@ -22,6 +22,8 @@ public class InfoPanel {
 	protected String deviceID = null;
 
 	protected Map<String, IFuncion> functions = null;
+
+	protected ArrayList<String> accidentes;
 
 	protected RoadPlace rp = null;	// simula la ubicación actual
 	protected InfoPanel_RoadInfoSubscriber subscriber = null;
@@ -35,6 +37,8 @@ public class InfoPanel {
 		this.infoPanelID = id;
 		this.brokerURL = brokerURL;
 		this.deviceID = deviceID;
+
+		this.accidentes = new ArrayList<String>();
 		
 		// this.notifier = new SmartCar_InicidentNotifier(id + ".incident-notifier", this, this.brokerURL);
 		// this.notifier.connect();
@@ -67,8 +71,10 @@ public class InfoPanel {
 		if (this.rp != rp && rp != null && this.rp != null) {
 			try {
 				subscriber.unsubscribe(this.baseTopic + "/road/" + this.rp.getRoad() + "/info");
+				subscriber.unsubscribe(this.baseTopic + "/road/" + this.rp.getRoad() + "/alerts");
 				this.rp = rp;
 				subscriber.subscribe(this.baseTopic + "/road/" + this.rp.getRoad() + "/info");
+				subscriber.subscribe(this.baseTopic + "/road/" + this.rp.getRoad() + "/alerts");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -79,10 +85,26 @@ public class InfoPanel {
 			this.rp = rp;
 			try {
 				subscriber.subscribe(this.baseTopic + "/road/"+this.rp.getRoad()+"/info");
+				subscriber.subscribe(this.baseTopic + "/road/"+this.rp.getRoad()+"/alerts");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void setAccidente(String accidente){
+		if(!this.accidentes.contains(accidente))
+			this.accidentes.add(accidente);
+
+		this.getFuncion("f2").encender();
+	}
+
+	public void removeAccidente(String accidente){
+		if(this.accidentes.contains(accidente))
+			this.accidentes.remove(accidente);
+
+		if(this.accidentes.size() == 0)
+			this.getFuncion("f2").apagar();
 	}
 
 	// public void vehicleStop(RoadPlace rp) {

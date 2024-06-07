@@ -44,6 +44,16 @@ public class InfoPanel_RoadInfoSubscriber extends MyMqttClient {
 				infoPanel.getFuncion("f1").encender();
 			}
 		}
+		else if (obj.getString("type").equals("ACCIDENT")) {
+			JSONObject msg = obj.getJSONObject("msg");
+			if (msg.getString("event").toUpperCase().equals("OPEN".toUpperCase())) {
+				infoPanel.setAccidente(msg.getString("id"));
+			}
+			else if (msg.getString("event").toUpperCase().equals("CLOSE".toUpperCase())) {
+				// infoPanel.f("parpadear", "f1");
+				infoPanel.removeAccidente(msg.getString("id"));
+			}
+		}
 	}
 
 	// public SmartCar_RoadInfoSubscriber(String clientId, InfoPanel smartcar, String MQTTBrokerURL) {
