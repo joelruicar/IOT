@@ -116,29 +116,32 @@ public class InfoPanel {
 	public void setCurrentRoadPlace(RoadPlace rp) {
 
 		// ############## DESCOMENTAR CUANDO TTMI008 FUNCIONE
-		// HttpRequest request = HttpRequest.newBuilder()
-		// 		.uri(URI.create(
-		// 				"http://ttmi008.iot.upv.es:8182/segment/" + rp.getRoad()))
-		// 		.header("Accept", "application/json")
-		// 		.header("Content-Type", "application/json")
-		// 		.method("GET", HttpRequest.BodyPublishers.noBody())
-		// 		.build();
-		// HttpResponse<String> response = null;
-		// try {
-		// 	response = HttpClient.newHttpClient().send(request,
-		// 			HttpResponse.BodyHandlers.ofString());
-		// } catch (IOException e) {
-		// 	e.printStackTrace();
-		// } catch (InterruptedException e) {
-		// 	e.printStackTrace();
-		// }
-		// try {
-		// 	JSONObject objres = new JSONObject(response.body());
-		// 	rp.setStart(objres.getInt("start-kp"));
-		// 	rp.setEnd(objres.getInt("end-kp"));
-		// } catch (Exception e) {
-		// 	e.printStackTrace();
-		// }
+		HttpRequest request = HttpRequest.newBuilder()
+				.uri(URI.create(
+						"http://ttmi008.iot.upv.es:8182/segment/" + rp.getRoad()))
+				.header("Accept", "application/json")
+				.header("Content-Type", "application/json")
+				.method("GET", HttpRequest.BodyPublishers.noBody())
+				.build();
+		HttpResponse<String> response = null;
+		try {
+			response = HttpClient.newHttpClient().send(request,
+					HttpResponse.BodyHandlers.ofString());
+		} catch (IOException e) {
+			System.out.println("Esto solo funciona si la api de ttmi008 esta activa");
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			System.out.println("Esto solo funciona si la api de ttmi008 esta activa");
+			e.printStackTrace();
+		}
+		try {
+			JSONObject objres = new JSONObject(response.body());
+			rp.setStart(objres.getInt("start-kp"));
+			rp.setEnd(objres.getInt("end-kp"));
+		} catch (Exception e) {
+			System.out.println("Esto solo funciona si la api de ttmi008 esta activa");
+			e.printStackTrace();
+		}
 
 		// 1.- Si ya teníamos algún suscriptor conectado al tramo de carretera antiguo,
 		// primero los desconectamos
