@@ -48,12 +48,19 @@ public class InfoPanel {
 	protected MyMqttClient publisher = null;
 	protected String baseTopic = "es/upv/pros/tatami/smartcities/traffic/PTPaterna";
 
-	protected static String clientEndpoint = "a1se7t1dcq6xyp-ats.iot.us-east-1.amazonaws.com";       // replace <prefix> and <region> with your own
-	protected static String clientId = "IoTDeviceClient-" + UUID.randomUUID().toString();                  // replace with your own client ID. Use unique client IDs for concurrent connections.
+	protected static String clientEndpoint = "a1se7t1dcq6xyp-ats.iot.us-east-1.amazonaws.com"; // replace <prefix> and
+																								// <region> with your
+																								// own
+	protected static String clientId = "IoTDeviceClient-" + UUID.randomUUID().toString(); // replace with your own
+																							// client ID. Use unique
+																							// client IDs for concurrent
+																							// connections.
 	protected static String certsDir = "certs/";
 	protected static String certID = "fd16159d548a1cdea892f05f82612b34d25387953d7f851d9d74e8a6aafe01f7";
-	protected static String certificateFile = certsDir + certID + "-certificate.pem.crt";               // X.509 based certificate file
-	protected static String privateKeyFile = certsDir + certID + "-private.pem.key";                    // PKCS#1 or PKCS#8 PEM encoded private key file
+	protected static String certificateFile = certsDir + certID + "-certificate.pem.crt"; // X.509 based certificate
+																							// file
+	protected static String privateKeyFile = certsDir + certID + "-private.pem.key"; // PKCS#1 or PKCS#8 PEM encoded
+																						// private key file
 	protected static String loggerId = "my-aws-iot-thing";
 
 	public InfoPanel(String id, String brokerURL, String deviceID) {
@@ -70,35 +77,60 @@ public class InfoPanel {
 		// this, this.brokerURL);
 		// this.notifier.connect();
 		this.publisher = new MyMqttClient(id + ".traffic", this, this.brokerURL);
-		System.out.println("VIVA ESPAÑA");
 		publisher.connect();
 		this.subscriber = new InfoPanel_RoadInfoSubscriber(id, this, brokerURL);
 		subscriber.connect();
 
 		AWSIotMqttClient client = initClient();
-		
+
 		// CONNECT CLIENT TO AWS IOT MQTT
 		// optional parameters can be set before connect()
-		AWSIotQos qos = AWSIotQos.QOS0;		
+		AWSIotQos qos = AWSIotQos.QOS0;
 		try {
 			client.connect();
 			MySimpleLogger.info(loggerId, "Client Connected to AWS IoT MQTT");
-			
+
 		} catch (AWSIotException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.out.println("VIVA ESPAÑA");
 		}
+		// PUBLISH a message in a TOPIC
+
+		JSONObject prop = new JSONObject();
+		try {
+			prop.put("f1", "encendidont");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		String topic = "f3";
+		publish(client, topic, prop.toString(), qos);
+
 	}
 
 	public static AWSIotMqttClient initClient() {
-		
-		// SampleUtil.java and its dependency PrivateKeyReader.java can be copied from the sample source code.
-		// Alternatively, you could load key store directly from a file - see the example included in this README.
+
+		// SampleUtil.java and its dependency PrivateKeyReader.java can be copied from
+		// the sample source code.
+		// Alternatively, you could load key store directly from a file - see the
+		// example included in this README.
 		KeyStorePasswordPair pair = SampleUtil.getKeyStorePasswordPair(certificateFile, privateKeyFile);
 		AWSIotMqttClient client = new AWSIotMqttClient(clientEndpoint, clientId, pair.keyStore, pair.keyPassword);
-		
+
 		return client;
+	}
+
+	public static void publish(AWSIotMqttClient client, String topic, String payload, AWSIotQos qos) {
+
+
+		// optional parameters can be set before connect()
+		try {
+			AWSIotMessage message = new AWSIotMessage(topic, qos, payload);
+			client.publish(message);
+			MySimpleLogger.info(loggerId, "... PUBLISHED message " + payload + " to TOPIC: " + topic);
+		} catch (AWSIotException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	// public void f(String state, String target){
@@ -120,28 +152,31 @@ public class InfoPanel {
 	// }
 
 	public void setCurrentRoadPlace(RoadPlace rp) {
-		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create(
-						"http://ttmi008.iot.upv.es:8182/segment/" + rp.getRoad()))
-				.header("Accept", "application/json")
-				.header("Content-Type", "application/json")
-				.method("GET", HttpRequest.BodyPublishers.noBody())
-				.build();
-		HttpResponse<String> response = null;
-		try {
-			response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		try {
-			JSONObject objres = new JSONObject(response.body());
-			rp.setStart(objres.getInt("start-kp"));
-			rp.setEnd(objres.getInt("end-kp"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
+		// ############## DESCOMENTAR CUANDO TTMI008 FUNCIONE
+		// HttpRequest request = HttpRequest.newBuilder()
+		// .uri(URI.create(
+		// "http://ttmi008.iot.upv.es:8182/segment/" + rp.getRoad()))
+		// .header("Accept", "application/json")
+		// .header("Content-Type", "application/json")
+		// .method("GET", HttpRequest.BodyPublishers.noBody())
+		// .build();
+		// HttpResponse<String> response = null;
+		// try {
+		// response = HttpClient.newHttpClient().send(request,
+		// HttpResponse.BodyHandlers.ofString());
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// } catch (InterruptedException e) {
+		// e.printStackTrace();
+		// }
+		// try {
+		// JSONObject objres = new JSONObject(response.body());
+		// rp.setStart(objres.getInt("start-kp"));
+		// rp.setEnd(objres.getInt("end-kp"));
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
 
 		// 1.- Si ya teníamos algún suscriptor conectado al tramo de carretera antiguo,
 		// primero los desconectamos

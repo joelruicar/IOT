@@ -4,8 +4,8 @@ public class RoadPlace {
 
 	protected String road = null;
 	protected int m = 0;
-	protected int start = 0;
-	protected int end   = 0;
+	protected int start = 450;
+	protected int end   = 20;
 	
 	public RoadPlace(String road, int m) {
 		this.road = road;

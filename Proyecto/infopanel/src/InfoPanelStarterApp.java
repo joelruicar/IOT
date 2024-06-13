@@ -1,3 +1,5 @@
+import org.apache.commons.codec.binary.Base64;
+
 import componentes.Funcion;
 import componentes.InfoPanel;
 import componentes.RoadPlace;
@@ -13,7 +15,8 @@ public class InfoPanelStarterApp {
 
 		String infoPanelID = args[0];
 		// String brokerURL = args[1];
-		String brokerURL = "tcp://d1512621af344ae4bf3b3891ca0eaf8e.s1.eu.hivemq.cloud:8883";
+		// String brokerURL = "tcp://d1512621af344ae4bf3b3891ca0eaf8e.s1.eu.hivemq.cloud:8883";
+		String brokerURL = "tcp://tambori.dsic.upv.es:1883";
 		String deviceID = args[2];
 
 		InfoPanel infoPanel = new InfoPanel(infoPanelID, brokerURL, deviceID);
