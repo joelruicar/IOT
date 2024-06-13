@@ -13,7 +13,7 @@ public class InfoPanelStarterApp {
 
 		String infoPanelID = args[0];
 		// String brokerURL = args[1];
-		String brokerURL = "tcp://tambori.dsic.upv.es:1883";
+		String brokerURL = "tcp://localhost:1883";
 		String deviceID = args[2];
 
 		InfoPanel infoPanel = new InfoPanel(infoPanelID, brokerURL, deviceID);

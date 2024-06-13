@@ -9,8 +9,6 @@ public class InfoPanelStarterApp {
 		}
 
 		String infoPanelID = args[0];
-		// String brokerURL = args[1];
-		// String brokerURL = "tcp://d1512621af344ae4bf3b3891ca0eaf8e.s1.eu.hivemq.cloud:8883";
 		String deviceID = args[2];
 
 		new InfoPanel(infoPanelID, deviceID);
