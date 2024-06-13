@@ -62,6 +62,8 @@ public class InfoPanel {
 	protected static String privateKeyFile = certsDir + certID + "-private.pem.key"; // PKCS#1 or PKCS#8 PEM encoded
 																						// private key file
 	protected static String loggerId = "my-aws-iot-thing";
+	AWSIotQos qos = null;
+	AWSIotMqttClient client = null;
 
 	public InfoPanel(String id, String brokerURL, String deviceID) {
 
@@ -81,11 +83,11 @@ public class InfoPanel {
 		this.subscriber = new InfoPanel_RoadInfoSubscriber(id, this, brokerURL);
 		subscriber.connect();
 
-		AWSIotMqttClient client = initClient();
+		this.client = initClient();
 
 		// CONNECT CLIENT TO AWS IOT MQTT
 		// optional parameters can be set before connect()
-		AWSIotQos qos = AWSIotQos.QOS0;
+		this.qos = AWSIotQos.QOS0;
 		try {
 			client.connect();
 			MySimpleLogger.info(loggerId, "Client Connected to AWS IoT MQTT");
@@ -95,15 +97,6 @@ public class InfoPanel {
 			e.printStackTrace();
 		}
 		// PUBLISH a message in a TOPIC
-
-		JSONObject prop = new JSONObject();
-		try {
-			prop.put("f1", "encendidont");
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		String topic = "f3";
-		publish(client, topic, prop.toString(), qos);
 
 	}
 
@@ -120,7 +113,6 @@ public class InfoPanel {
 	}
 
 	public static void publish(AWSIotMqttClient client, String topic, String payload, AWSIotQos qos) {
-
 
 		// optional parameters can be set before connect()
 		try {
@@ -213,23 +205,22 @@ public class InfoPanel {
 			this.accidentes.add(accidente);
 
 		this.getFuncion("f2").encender();
+		AWS_Report("f2", "encender");
 	}
 
 	public void removeAccidente(String accidente) {
 		if (this.accidentes.contains(accidente))
 			this.accidentes.remove(accidente);
 
-		if (this.accidentes.size() == 0)
+		if (this.accidentes.size() == 0) {
 			this.getFuncion("f2").apagar();
+			AWS_Report("f2", "apagar");
+		}
 	}
 
 	public void setEspeciales(String especial, int posicion) {
 		this.especiales.put(especial, posicion);
 		updateEspecialLight();
-
-		// int rel_pos = this.rp.getM() - 200;
-		// if (rel_pos < 200 && rel_pos > -200)
-		// this.getFuncion("f3").encender();
 	}
 
 	public void removeEspeciales(String especial) {
@@ -246,6 +237,7 @@ public class InfoPanel {
 
 		if (this.especiales.isEmpty()) {
 			this.getFuncion("f3").apagar();
+			AWS_Report("f3", "apagar");
 			return;
 		}
 
@@ -254,6 +246,7 @@ public class InfoPanel {
 			if (ascendente && diff >= 0) {
 				if (diff < 200) {
 					this.getFuncion("f3").encender();
+					AWS_Report("f3", "encender");
 					return;
 				} else {
 					parpadear = true;
@@ -261,6 +254,7 @@ public class InfoPanel {
 			} else if (!ascendente && diff <= 0) {
 				if (diff > -200) {
 					this.getFuncion("f3").encender();
+					AWS_Report("f3", "encender");
 					return;
 				} else {
 					parpadear = true;
@@ -269,9 +263,22 @@ public class InfoPanel {
 		}
 		if (parpadear) {
 			this.getFuncion("f3").parpadear();
+			AWS_Report("f3", "parpadear");
 			return;
 		}
 		this.getFuncion("f3").apagar();
+		AWS_Report("f3", "apagar");
+	}
+
+	public void AWS_Report(String target, String action) {
+		JSONObject prop = new JSONObject();
+		try {
+			prop.put(target, "encendidont");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		String topic = target;
+		publish(client, topic, prop.toString(), qos);
 	}
 
 	// public void vehicleStop(RoadPlace rp) {
