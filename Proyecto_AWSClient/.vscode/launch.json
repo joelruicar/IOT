@@ -1,0 +1,19 @@
+{
+    // Utilitzeu IntelliSense per aprendre sobre els atributs possibles.
+    // Passeu el cursor per sobre per veure les descripcions dels atributs existents.
+    // Per a més informació, visiteu: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "InfoPanelStarterApp",
+            "request": "launch",
+            "mainClass": "InfoPanelStarterApp",
+            "args": [
+                "InfoPanel-1234ABC",
+                "tcp://ttmi008.iot.upv.es:1883",
+                "ttmi061"
+            ]
+        }
+    ]
+}

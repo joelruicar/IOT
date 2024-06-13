@@ -1,4 +1,4 @@
-package awsiotthing;
+package componentes;
 
 import com.amazonaws.services.iot.client.AWSIotMessage;
 import com.amazonaws.services.iot.client.AWSIotQos;
@@ -16,7 +16,7 @@ public class AWSIoT_TopicHandler extends AWSIotTopic {
 	public void onMessage(AWSIotMessage message) {
 		//super.onMessage(message);
 		String text = message.getStringPayload();
-		MySimpleLogger.info(AWSIoTThingStarter.loggerId + "-topicHandler", "RECEIVED: " + text);
+		MySimpleLogger.info(InfoPanel.loggerId + "-topicHandler", "RECEIVED: " + text);
 
 	}
 

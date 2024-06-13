@@ -21,12 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-// import org.eclipse.paho.client.mqttv3.MqttClient;
-// import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-// import org.eclipse.paho.client.mqttv3.MqttException;
 import org.json.JSONObject;
-
-import com.amazonaws.services.iot.client.AWSIotMqttClient;
 
 import interfaces.IFuncion;
 import utils.MySimpleLogger;
@@ -44,7 +39,6 @@ public class InfoPanel {
 
 	protected RoadPlace rp = null; // simula la ubicación actual
 	protected InfoPanel_RoadInfoSubscriber subscriber = null;
-	// protected SmartCar_InicidentNotifier notifier = null;
 	protected MyMqttClient publisher = null;
 	protected String baseTopic = "es/upv/pros/tatami/smartcities/traffic/PTPaterna";
 
@@ -66,8 +60,6 @@ public class InfoPanel {
 	AWSIotMqttClient client = null;
 
 	public InfoPanel(String id, String brokerURL, String deviceID) {
-
-		// this.setSmartCarID(id);
 		this.infoPanelID = id;
 		this.brokerURL = brokerURL;
 		this.deviceID = deviceID;
@@ -75,9 +67,6 @@ public class InfoPanel {
 		this.accidentes = new ArrayList<String>();
 		this.especiales = new HashMap<>();
 
-		// this.notifier = new SmartCar_InicidentNotifier(id + ".incident-notifier",
-		// this, this.brokerURL);
-		// this.notifier.connect();
 		this.publisher = new MyMqttClient(id + ".traffic", this, this.brokerURL);
 		publisher.connect();
 		this.subscriber = new InfoPanel_RoadInfoSubscriber(id, this, brokerURL);
@@ -97,7 +86,6 @@ public class InfoPanel {
 			e.printStackTrace();
 		}
 		// PUBLISH a message in a TOPIC
-
 	}
 
 	public static AWSIotMqttClient initClient() {
@@ -125,49 +113,31 @@ public class InfoPanel {
 		}
 	}
 
-	// public void f(String state, String target){
-	// System.out.println("State: " + state + "; target: " + target);
-	// String topic = "dispositivo/" + this.deviceID + "/funcion/" + target +
-	// "/comandos";
-	// String message = buildMessage(state);
-
-	// this.publisher.publish(topic, message);
-
-	// }
-
-	// public void setSmartCarID(String smartCarID) {
-	// this.smartCarID = smartCarID;
-	// }
-
-	// public String getSmartCarID() {
-	// return smartCarID;
-	// }
-
 	public void setCurrentRoadPlace(RoadPlace rp) {
 
 		// ############## DESCOMENTAR CUANDO TTMI008 FUNCIONE
 		// HttpRequest request = HttpRequest.newBuilder()
-		// .uri(URI.create(
-		// "http://ttmi008.iot.upv.es:8182/segment/" + rp.getRoad()))
-		// .header("Accept", "application/json")
-		// .header("Content-Type", "application/json")
-		// .method("GET", HttpRequest.BodyPublishers.noBody())
-		// .build();
+		// 		.uri(URI.create(
+		// 				"http://ttmi008.iot.upv.es:8182/segment/" + rp.getRoad()))
+		// 		.header("Accept", "application/json")
+		// 		.header("Content-Type", "application/json")
+		// 		.method("GET", HttpRequest.BodyPublishers.noBody())
+		// 		.build();
 		// HttpResponse<String> response = null;
 		// try {
-		// response = HttpClient.newHttpClient().send(request,
-		// HttpResponse.BodyHandlers.ofString());
+		// 	response = HttpClient.newHttpClient().send(request,
+		// 			HttpResponse.BodyHandlers.ofString());
 		// } catch (IOException e) {
-		// e.printStackTrace();
+		// 	e.printStackTrace();
 		// } catch (InterruptedException e) {
-		// e.printStackTrace();
+		// 	e.printStackTrace();
 		// }
 		// try {
-		// JSONObject objres = new JSONObject(response.body());
-		// rp.setStart(objres.getInt("start-kp"));
-		// rp.setEnd(objres.getInt("end-kp"));
+		// 	JSONObject objres = new JSONObject(response.body());
+		// 	rp.setStart(objres.getInt("start-kp"));
+		// 	rp.setEnd(objres.getInt("end-kp"));
 		// } catch (Exception e) {
-		// e.printStackTrace();
+		// 	e.printStackTrace();
 		// }
 
 		// 1.- Si ya teníamos algún suscriptor conectado al tramo de carretera antiguo,
@@ -281,17 +251,6 @@ public class InfoPanel {
 		publish(client, topic, prop.toString(), qos);
 	}
 
-	// public void vehicleStop(RoadPlace rp) {
-	// try {
-	// String message = buildMessage("VEHICLE_OUT", "PrivateUsage");
-	// this.publisher.publish(this.baseTopic + "/road/" + this.rp.getRoad()
-	// +"/traffic", message);
-	// subscriber.unsubscribe(this.baseTopic + "/road/"+this.rp.getRoad()+"/info");
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// }
-
 	protected Map<String, IFuncion> getFunctions() {
 		return this.functions;
 	}
@@ -312,37 +271,5 @@ public class InfoPanel {
 		this.getFunctions().put(f.getId(), f);
 		return;
 	}
-
-	// private String buildMessage(String state) {
-	// JSONObject completeMessage = new JSONObject();
-	// try {
-	// completeMessage.put("accion", state);
-	// } catch(Exception e) {
-	// e.printStackTrace();
-	// }
-	// return completeMessage.toString();
-	// }
-
-	// public RoadPlace getCurrentPlace() {
-	// return rp;
-	// }
-
-	// public void changeKm(int km) {
-	// this.getCurrentPlace().setKm(km);
-	// }
-
-	// public void getIntoRoad(String road, int km) {
-	// this.getCurrentPlace().setRoad(road);
-	// this.getCurrentPlace().setKm(km);
-	// }
-
-	// public void notifyIncident(String incidentType) {
-	// if ( this.notifier == null )
-	// return;
-
-	// this.notifier.alert(this.getSmartCarID(), incidentType,
-	// this.getCurrentPlace());
-
-	// }
 
 }
