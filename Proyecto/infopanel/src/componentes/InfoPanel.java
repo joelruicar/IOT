@@ -273,7 +273,7 @@ public class InfoPanel {
 	public void AWS_Report(String target, String action) {
 		JSONObject prop = new JSONObject();
 		try {
-			prop.put(target, "encendidont");
+			prop.put(target, action);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
