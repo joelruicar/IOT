@@ -4,23 +4,23 @@ import componentes.RoadPlace;
 import interfaces.FuncionStatus;
 
 public class InfoPanelStarterApp {
-  public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {
 
-    if ( args.length < 3 )
-		{
+		if (args.length < 3) {
 			System.out.println("Usage: InfoPanelStarterApp <infoPanelID> <brokerURL> <deviceID>");
 			System.exit(1);
 		}
 
 		String infoPanelID = args[0];
-		String brokerURL = args[1];
-    String deviceID = args[2];
+		// String brokerURL = args[1];
+		String brokerURL = "tcp://d1512621af344ae4bf3b3891ca0eaf8e.s1.eu.hivemq.cloud:8883";
+		String deviceID = args[2];
 
-    InfoPanel infoPanel = new InfoPanel(infoPanelID, brokerURL, deviceID);
-    // infoPanel.setCurrentRoadPlace(new RoadPlace("R1s1", 300));
-    infoPanel.setCurrentRoadPlace(new RoadPlace("R1s2d", 300));
+		InfoPanel infoPanel = new InfoPanel(infoPanelID, brokerURL, deviceID);
+		// infoPanel.setCurrentRoadPlace(new RoadPlace("R1s1", 300));
+		infoPanel.setCurrentRoadPlace(new RoadPlace("R1s2d", 300));
 
-    Funcion f1 = Funcion.build("f1", FuncionStatus.OFF);
+		Funcion f1 = Funcion.build("f1", FuncionStatus.OFF);
 		infoPanel.addFuncion(f1);
 
 		Funcion f2 = Funcion.build("f2", FuncionStatus.OFF);
@@ -29,5 +29,5 @@ public class InfoPanelStarterApp {
 		Funcion f3 = Funcion.build("f3", FuncionStatus.OFF);
 		infoPanel.addFuncion(f3);
 
-  }
+	}
 }
